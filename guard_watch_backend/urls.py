@@ -15,7 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from core.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/login/', LoginView.as_view(), name='login'),
+    path('api/create_guard/', CreateGuard.as_view(), name='create_guard'),
+    path('api/bulk_create_log/', BulkCreateLog.as_view(), name='create_guard'),
+    path('api/guard_report/', get_guard_report_page, name='guard_page'),
+    path('api/guard_data/', get_guard_report_data, name='guard_data'),
 ]
