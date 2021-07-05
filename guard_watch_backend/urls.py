@@ -21,7 +21,22 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/login/', LoginView.as_view(), name='login'),
     path('api/create_guard/', CreateGuard.as_view(), name='create_guard'),
+    path('api/create_wristband/', CreateBand.as_view(), name='create_guard'),
+
+    path('api/guards_list/', get_guard_list, name='guard_list'),
+    path('api/guard_interval_history/<slug:staff_id>', get_guard_history, name='guard_data'),  # qstart ,#qend
+    path('api/guard_last_history/<slug:staff_id>', get_guard_last_history, name='guard_data'),  # qstart ,#qend
+    path('api/guard_profile/', get_guard_profile.as_view(), name='guard_page'),
+
+    path('api/bands_list/', get_band_list, name='guard_list'),
+    path('api/band_interval_history/<slug:band_id>', get_band_history, name='guard_list'),  # qstart ,#qend
+    path('api/band_last_history/<slug:band_id>', get_band_last_history, name='guard_list'),  # qstart ,#qend
+
+    path('api/all_day_history/', get_day_history, name='guard_list'),  # qby:band/guard?,qdate
+    path('api/edit_wristband_guard/', EditBandGuard.as_view(), name='guard_list'),
+    path('api/edit_guard/', UpdateGuard.as_view(), name='guard_list'),
+    path('api/delete_band/', UpdateBand.as_view(), name='guard_list'),
+    path('api/delete_guard/', UpdateGuard.as_view(), name='guard_list'),
+
     path('api/bulk_create_log/', BulkCreateLog.as_view(), name='create_guard'),
-    path('api/guard_report/', get_guard_report_page, name='guard_page'),
-    path('api/guard_data/', get_guard_report_data, name='guard_data'),
 ]

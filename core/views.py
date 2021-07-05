@@ -17,7 +17,7 @@ from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from core.serializers import LoginSerializer
+from core.serializers import *
 
 
 class CsrfExemptSessionAuthentication(authentication.SessionAuthentication):
@@ -55,13 +55,59 @@ class CreateGuard(APIView):
         pass
 
     def post(self, request):
+        serializer = GuardSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({'message': 'Bad Credentials'}, status=400)
+        guard = serializer.create(serializer.validated_data)
+        return Response({'message': 'Registered Successfully'}, status=200)
+
+        pass
+
+
+class CreateBand(APIView):
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        pass
+
+
+class UpdateGuard(APIView):
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        pass
+
+    def delete(self, request):
+        pass
+
+
+class UpdateBand(APIView):
+    def get(self, request):
+        pass
+
+    def post(self, request):
+        pass
+
+    def delete(self, request):
+        pass
+
+
+class EditBandGuard(APIView):
+    def get(self, request):
+        pass
+
+    def post(self, request):
         pass
 
 
 class BulkCreateLog(APIView):
 
     def post(self, request):
-        pass
+        import json
+        data = json.loads(request.data)
+        return Response('hi')
 
 
 @api_view(['GET'])
@@ -70,10 +116,40 @@ def guard_list(request):
 
 
 @api_view(['GET'])
-def get_guard_report_page(request):
+def get_guard_history(request, staff_id):
     pass
 
 
 @api_view(['GET'])
-def get_guard_report_data(request):
+def get_band_history(request, staff_id):
+    pass
+
+
+@api_view(['GET'])
+def get_guard_list(request):
+    pass
+
+
+@api_view(['GET'])
+def get_band_list(request):
+    pass
+
+
+@api_view(['GET'])
+def get_guard_last_history(request):
+    pass
+
+
+@api_view(['GET'])
+def get_band_last_history(request):
+    pass
+
+
+@api_view(['GET'])
+def get_day_history(request):
+    pass
+
+
+@api_view(['GET'])
+def get_guard_profile(request):
     pass

@@ -10,6 +10,8 @@ class GuardSerializer(serializers.ModelSerializer):
         fields = ['name', 'staff_id', 'date_joined']
 
 
+
+
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(label="شناسه کاربری")
     password = serializers.CharField(label="رمز عبور", style={'input_type': 'password'}
