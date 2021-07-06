@@ -26,27 +26,28 @@ urlpatterns = [
                   path('api/create_wristband/', CreateBand.as_view(), name='create_band'),
 
                   path('api/guards_list/', get_guard_list, name='guard_list'),
-                  path('api/guard_interval_history/<slug:staff_id>', get_guard_history, name='guard_data'),
+                  path('api/guard_interval_history/<slug:staff_id>/', get_guard_history, name='guard_history'),
                   # qstart ,#qend
-                  path('api/guard_last_history/<slug:staff_id>', get_guard_last_history, name='guard_data'),
+                  path('api/guard_last_history/<slug:staff_id>/', get_guard_last_history, name='guard_last'),
                   # qstart ,#qend
-                  path('api/guard_profile/', get_guard_profile, name='guard_page'),
-
-                  path('api/bands_list/', get_band_list, name='guard_list'),
-                  path('api/band_interval_history/<slug:band_id>', get_band_history, name='guard_list'),
-                  # qstart ,#qend
-                  path('api/band_last_history/<slug:band_id>', get_band_last_history, name='guard_list'),
-                  # qstart ,#qend
-
-                  path('api/all_day_history/', get_day_history, name='guard_list'),  # qby:band/guard?,qdate
-                  path('api/edit_wristband_guard/', EditBandGuard.as_view(), name='guard_list'),
+                  path('api/guard_profile/', get_guard_profile, name='guard_profile'),
                   path('api/edit_guard/', login_required(UpdateGuard.as_view(), login_url='/api/login'),
-                       name='guard_list'),
+                       name='edit_guard'),
+
+                  path('api/bands_list/', get_band_list, name='band_list'),
+                  path('api/band_interval_history/<slug:band_id>/', get_band_history, name='band_history'),
+                  # qstart ,#qend
+                  path('api/band_last_history/<slug:band_id>/', get_band_last_history, name='band_last'),
+                  # qstart ,#qend
+
+                  path('api/all_day_history/', get_day_history, name='day_history'),  # qby:band/guard?,qdate
+                  path('api/edit_wristband_guard/', EditBandGuard.as_view(), name='edit_band_guard'),
+
                   path('api/delete_band/', login_required(UpdateBand.as_view(), login_url='/api/login'),
-                       name='guard_list'),
+                       name='delete_band'),
                   path('api/delete_guard/', login_required(UpdateGuard.as_view(), login_url='/api/login'),
-                       name='guard_list'),
+                       name='delete_guard'),
 
                   path('api/bulk_create_log/', login_required(BulkCreateLog.as_view(), login_url='/api/login'),
-                       name='create_guard'),
+                       name='create_log'),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

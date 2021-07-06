@@ -188,8 +188,18 @@ def get_guard_history(request, staff_id):
 @login_required(login_url='/api/login')
 def get_band_history(request, band_id):
     try:
-        logs = LogInstance.objects.filter(wristband__band_id=band_id).order_by('time').values()
-        return Response({'logs': logs}, status=200)
+        from datetime import datetime
+        qstart = request.query_params.get('qstart')
+        # qstart = datetime.strptime(request.GET.get('qdate'), '%Y-%m-%d')
+        # qend = datetime.strptime(request.GET.get('qdate'), '%Y-%m-%d')
+        qend = request.query_params.get('qend')
+        logs = LogInstance.objects.filter(wristband__band_id=band_id).order_by('time')
+        if qstart:
+            logs = logs.filter(time__gte=qstart)
+        if qend:
+            logs = logs.filter(time__lte=qend)
+
+        return Response({'logs': logs.values()}, status=200)
     except:
         return Response(status=400)
 
