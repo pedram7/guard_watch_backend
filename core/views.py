@@ -137,9 +137,15 @@ class EditBandGuard(APIView):
     #     pass
 
     def post(self, request):
-        print()
-        x = request.data
-
+        staff_id = request.data.get('staff_id')
+        band_id = request.data.get('band_id')
+        try:
+            band = Wristband.objects.get(band_id=band_id)
+            band.guard = Guard.objects.get(staff_id=staff_id)
+            band.save()
+            return Response(status=200)
+        except:
+            return Response(status=400)
 
 
 class BulkCreateLog(APIView):
@@ -162,45 +168,81 @@ class BulkCreateLog(APIView):
 
 
 @api_view(['GET'])
+@login_required(login_url='/api/login')
 def guard_list(request):
-    pass
+    guards = Guard.objects.all()
+    return Response({'guards': guards})
 
 
 @api_view(['GET'])
+@login_required(login_url='/api/login')
 def get_guard_history(request, staff_id):
-    pass
+    try:
+        logs = LogInstance.objects.filter(guard__staff_id=staff_id).order_by('time').values()
+        return Response({'logs': logs}, status=200)
+    except:
+        return Response(status=400)
 
 
 @api_view(['GET'])
-def get_band_history(request, staff_id):
-    pass
+@login_required(login_url='/api/login')
+def get_band_history(request, band_id):
+    try:
+        logs = LogInstance.objects.filter(wristband__band_id=band_id).order_by('time').values()
+        return Response({'logs': logs}, status=200)
+    except:
+        return Response(status=400)
 
 
 @api_view(['GET'])
+@login_required(login_url='/api/login')
 def get_guard_list(request):
-    pass
+    bands = Wristband.objects.all().values()
+    return Response({'bands': bands}, status=200)
 
 
 @api_view(['GET'])
+@login_required(login_url='/api/login')
 def get_band_list(request):
-    pass
+    bands = Wristband.objects.all()
+    return Response({'bands': bands}, status=200)
 
 
 @api_view(['GET'])
-def get_guard_last_history(request):
-    pass
+@login_required(login_url='/api/login')
+def get_guard_last_history(request, staff_id):
+    try:
+        last = LogInstance.objects.filter(guard__staff_id=staff_id).order_by('time').values()
+        last = last[len(last) - 1]
+        return Response({'last': last}, status=200)
+    except:
+        return Response(status=400)
 
 
 @api_view(['GET'])
-def get_band_last_history(request):
-    pass
+@login_required(login_url='/api/login')
+def get_band_last_history(request, band_id):
+    try:
+        last = LogInstance.objects.filter(wristband__band_id=band_id).order_by('time').values()
+        last = last[len(last) - 1]
+        return Response({'last': last}, status=200)
+    except:
+        return Response(status=400)
 
 
 @api_view(['GET'])
+@login_required(login_url='/api/login')
 def get_day_history(request):
-    pass
+    try:
+        from datetime import datetime
+        qdate = datetime.strptime(request.GET.get('qdate'), '%Y-%m-%d')
+        last = LogInstance.objects.filter(time__date=qdate).order_by('time').values()
+        return Response({'logs': last}, status=200)
+    except:
+        return Response(status=400)
 
 
 @api_view(['GET'])
+@login_required(login_url='/api/login')
 def get_guard_profile(request):
     pass

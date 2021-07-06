@@ -23,7 +23,7 @@ urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('api/login/', LoginView.as_view(), name='login'),
                   path('api/create_guard/', CreateGuard.as_view(), name='create_guard'),
-                  path('api/create_wristband/', CreateBand.as_view(), name='create_guard'),
+                  path('api/create_wristband/', CreateBand.as_view(), name='create_band'),
 
                   path('api/guards_list/', get_guard_list, name='guard_list'),
                   path('api/guard_interval_history/<slug:staff_id>', get_guard_history, name='guard_data'),
@@ -40,9 +40,13 @@ urlpatterns = [
 
                   path('api/all_day_history/', get_day_history, name='guard_list'),  # qby:band/guard?,qdate
                   path('api/edit_wristband_guard/', EditBandGuard.as_view(), name='guard_list'),
-                  path('api/edit_guard/', UpdateGuard.as_view(), name='guard_list'),
-                  path('api/delete_band/', UpdateBand.as_view(), name='guard_list'),
-                  path('api/delete_guard/', UpdateGuard.as_view(), name='guard_list'),
+                  path('api/edit_guard/', login_required(UpdateGuard.as_view(), login_url='/api/login'),
+                       name='guard_list'),
+                  path('api/delete_band/', login_required(UpdateBand.as_view(), login_url='/api/login'),
+                       name='guard_list'),
+                  path('api/delete_guard/', login_required(UpdateGuard.as_view(), login_url='/api/login'),
+                       name='guard_list'),
 
-                  path('api/bulk_create_log/', BulkCreateLog.as_view(), name='create_guard'),
+                  path('api/bulk_create_log/', login_required(BulkCreateLog.as_view(), login_url='/api/login'),
+                       name='create_guard'),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
