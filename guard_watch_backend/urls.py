@@ -13,30 +13,36 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from core.views import *
+from guard_watch_backend import settings
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/login/', LoginView.as_view(), name='login'),
-    path('api/create_guard/', CreateGuard.as_view(), name='create_guard'),
-    path('api/create_wristband/', CreateBand.as_view(), name='create_guard'),
+                  path('admin/', admin.site.urls),
+                  path('api/login/', LoginView.as_view(), name='login'),
+                  path('api/create_guard/', CreateGuard.as_view(), name='create_guard'),
+                  path('api/create_wristband/', CreateBand.as_view(), name='create_guard'),
 
-    path('api/guards_list/', get_guard_list, name='guard_list'),
-    path('api/guard_interval_history/<slug:staff_id>', get_guard_history, name='guard_data'),  # qstart ,#qend
-    path('api/guard_last_history/<slug:staff_id>', get_guard_last_history, name='guard_data'),  # qstart ,#qend
-    path('api/guard_profile/', get_guard_profile.as_view(), name='guard_page'),
+                  path('api/guards_list/', get_guard_list, name='guard_list'),
+                  path('api/guard_interval_history/<slug:staff_id>', get_guard_history, name='guard_data'),
+                  # qstart ,#qend
+                  path('api/guard_last_history/<slug:staff_id>', get_guard_last_history, name='guard_data'),
+                  # qstart ,#qend
+                  path('api/guard_profile/', get_guard_profile, name='guard_page'),
 
-    path('api/bands_list/', get_band_list, name='guard_list'),
-    path('api/band_interval_history/<slug:band_id>', get_band_history, name='guard_list'),  # qstart ,#qend
-    path('api/band_last_history/<slug:band_id>', get_band_last_history, name='guard_list'),  # qstart ,#qend
+                  path('api/bands_list/', get_band_list, name='guard_list'),
+                  path('api/band_interval_history/<slug:band_id>', get_band_history, name='guard_list'),
+                  # qstart ,#qend
+                  path('api/band_last_history/<slug:band_id>', get_band_last_history, name='guard_list'),
+                  # qstart ,#qend
 
-    path('api/all_day_history/', get_day_history, name='guard_list'),  # qby:band/guard?,qdate
-    path('api/edit_wristband_guard/', EditBandGuard.as_view(), name='guard_list'),
-    path('api/edit_guard/', UpdateGuard.as_view(), name='guard_list'),
-    path('api/delete_band/', UpdateBand.as_view(), name='guard_list'),
-    path('api/delete_guard/', UpdateGuard.as_view(), name='guard_list'),
+                  path('api/all_day_history/', get_day_history, name='guard_list'),  # qby:band/guard?,qdate
+                  path('api/edit_wristband_guard/', EditBandGuard.as_view(), name='guard_list'),
+                  path('api/edit_guard/', UpdateGuard.as_view(), name='guard_list'),
+                  path('api/delete_band/', UpdateBand.as_view(), name='guard_list'),
+                  path('api/delete_guard/', UpdateGuard.as_view(), name='guard_list'),
 
-    path('api/bulk_create_log/', BulkCreateLog.as_view(), name='create_guard'),
-]
+                  path('api/bulk_create_log/', BulkCreateLog.as_view(), name='create_guard'),
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

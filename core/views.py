@@ -28,13 +28,12 @@ class CsrfExemptSessionAuthentication(authentication.SessionAuthentication):
 class LoginView(APIView):
     permission_classes = (permissions.AllowAny,)
     authentication_classes = (CsrfExemptSessionAuthentication,)
-    renderer_classes = [TemplateHTMLRenderer]
 
-    def get(self, request):
-        if request.user.is_authenticated:
-            return Response(template_name='login.html')
-        else:
-            return Response(template_name='login.html')
+    # def get(self, request):
+    #     if request.user.is_authenticated:
+    #         return Response(template_name='login.html')
+    #     else:
+    #         return Response(template_name='login.html')
 
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
@@ -43,7 +42,7 @@ class LoginView(APIView):
             user = serializer.validated_data['user']
             login(request, user)
 
-            return redirect('choose_file')
+            return Response(status=200)
 
         except ValidationError:
             return Response({'message': 'login failed', 'form': serializer}, template_name='login.html',
@@ -51,8 +50,11 @@ class LoginView(APIView):
 
 
 class CreateGuard(APIView):
-    def get(self, request):
-        pass
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = (CsrfExemptSessionAuthentication,)
+
+    # def get(self, request):
+    #     pass
 
     def post(self, request):
         serializer = GuardSerializer(data=request.data)
@@ -65,49 +67,98 @@ class CreateGuard(APIView):
 
 
 class CreateBand(APIView):
-    def get(self, request):
-        pass
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = (CsrfExemptSessionAuthentication,)
+
+    # def get(self, request):
+    #     pass
 
     def post(self, request):
+        serializer = BandSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({'message': 'Bad Credentials'}, status=400)
+        band = serializer.create(serializer.validated_data)
+        return Response({'message': 'Registered Successfully'}, status=200)
+
         pass
 
 
 class UpdateGuard(APIView):
-    def get(self, request):
-        pass
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = (CsrfExemptSessionAuthentication,)
+
+    # def get(self, request):
+    #     pass
 
     def post(self, request):
-        pass
+        serializer = GuardSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({'message': 'Bad Credentials'}, status=400)
+        guard = serializer.update(serializer.validated_data)
+        return Response({'message': 'Updated Successfully'}, status=200)
 
     def delete(self, request):
-        pass
+        try:
+            guard = Guard.objects.get(staff_id=request.data.get('staff_id'))
+        except Guard.DoesNotExist:
+            return Response({'message': 'Wrong ID'}, status=400)
+        guard.delete()
+        return Response({'message': 'Deleted Successfully'}, status=200)
 
 
 class UpdateBand(APIView):
-    def get(self, request):
-        pass
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = (CsrfExemptSessionAuthentication,)
+
+    # def get(self, request):
+    #     pass
 
     def post(self, request):
-        pass
+        serializer = BandSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({'message': 'Bad Credentials'}, status=400)
+        band = serializer.update(serializer.validated_data)
+        return Response({'message': 'Updated Successfully'}, status=200)
 
     def delete(self, request):
-        pass
+        try:
+            band = Wristband.objects.get(band_id=request.data.get('band_id'))
+        except Wristband.DoesNotExist:
+            return Response({'message': 'Wrong ID'}, status=400)
+        band.delete()
+        return Response({'message': 'Deleted Successfully'}, status=200)
 
 
 class EditBandGuard(APIView):
-    def get(self, request):
-        pass
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = (CsrfExemptSessionAuthentication,)
+
+    # def get(self, request):
+    #     pass
 
     def post(self, request):
-        pass
+        print()
+        x = request.data
+
 
 
 class BulkCreateLog(APIView):
+    permission_classes = (permissions.AllowAny,)
+    authentication_classes = (CsrfExemptSessionAuthentication,)
 
     def post(self, request):
-        import json
-        data = json.loads(request.data)
-        return Response('hi')
+        serializer = BulkLogSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({'message': 'Bad Credentials'}, status=400)
+
+        try:
+            band = Wristband.objects.get(band_id=serializer.validated_data['band_id'])
+        except:
+            return Response(status=400)
+
+        serializer.create(serializer.validated_data)
+
+        return Response({'message': 'Registered Successfully'}, status=200)
 
 
 @api_view(['GET'])
