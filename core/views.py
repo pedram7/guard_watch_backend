@@ -254,5 +254,20 @@ def get_day_history(request):
 
 @api_view(['GET'])
 @login_required(login_url='/api/login')
-def get_guard_profile(request):
-    pass
+def get_guard_profile(request, staff_id):
+    try:
+        guard = Guard.objects.get(staff_id=staff_id).values()
+        return Response({'guard': guard}, status=200)
+
+    except:
+        return Response({'message': 'Bad req'}, status=400)
+
+
+@api_view(['GET'])
+@login_required(login_url='/api/login')
+def active_guards(request):
+    try:
+        guards = Guard.objects.exclude(band__isnull=False).values()
+        return Response({'guards': guards}, status=200)
+    except:
+        return Response({'message': 'Bad req'}, status=400)
