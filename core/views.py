@@ -42,7 +42,7 @@ class LoginView(APIView):
             user = serializer.validated_data['user']
             login(request, user)
 
-            return Response(status=200)
+            return Response({'message':'login successful'},status=200)
 
         except ValidationError:
             return Response({'message': 'login failed'}, template_name='login.html',

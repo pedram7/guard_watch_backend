@@ -22,6 +22,7 @@ from guard_watch_backend import settings
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('api/login/', LoginView.as_view(), name='login'),
+                  path('api/login', LoginView.as_view(), name='login_noslash'),
                   path('api/create_guard/', CreateGuard.as_view(), name='create_guard'),
                   path('api/create_wristband/', CreateBand.as_view(), name='create_band'),
 
@@ -29,7 +30,7 @@ urlpatterns = [
                   path('api/guard_interval_history/<slug:staff_id>/', get_guard_history, name='guard_history'),
                   # qstart ,#qend
                   path('api/guard_last_history/<slug:staff_id>/', get_guard_last_history, name='guard_last'),
-                  # qstart ,#qend
+                  
                   path('api/guard_profile/', get_guard_profile, name='guard_profile'),
                   path('api/edit_guard/', login_required(UpdateGuard.as_view(), login_url='/api/login'),
                        name='edit_guard'),
@@ -38,9 +39,9 @@ urlpatterns = [
                   path('api/band_interval_history/<slug:band_id>/', get_band_history, name='band_history'),
                   # qstart ,#qend
                   path('api/band_last_history/<slug:band_id>/', get_band_last_history, name='band_last'),
-                  # qstart ,#qend
+                  
 
-                  path('api/all_day_history/', get_day_history, name='day_history'),  # qby:band/guard?,qdate
+                  path('api/all_day_history/', get_day_history, name='day_history'),  #qdate
                   path('api/edit_wristband_guard/', EditBandGuard.as_view(), name='edit_band_guard'),
 
                   path('api/delete_band/', login_required(UpdateBand.as_view(), login_url='/api/login'),
