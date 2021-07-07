@@ -45,8 +45,8 @@ class LoginView(APIView):
             return Response(status=200)
 
         except ValidationError:
-            return Response({'message': 'login failed', 'form': serializer}, template_name='login.html',
-                            status=403)
+            return Response({'message': 'login failed'}, template_name='login.html',
+                            status=401)
 
 
 class CreateGuard(APIView):
@@ -143,9 +143,9 @@ class EditBandGuard(APIView):
             band = Wristband.objects.get(band_id=band_id)
             band.guard = Guard.objects.get(staff_id=staff_id)
             band.save()
-            return Response(status=200)
+            return Response({'message': 'edited'}, status=200)
         except:
-            return Response(status=400)
+            return Response({'message': 'bad request'}, status=400)
 
 
 class BulkCreateLog(APIView):
@@ -160,7 +160,7 @@ class BulkCreateLog(APIView):
         try:
             band = Wristband.objects.get(band_id=serializer.validated_data['band_id'])
         except:
-            return Response(status=400)
+            return Response({'message': 'no such band'}, status=400)
 
         serializer.create(serializer.validated_data)
 
@@ -181,7 +181,7 @@ def get_guard_history(request, staff_id):
         logs = LogInstance.objects.filter(guard__staff_id=staff_id).order_by('time').values()
         return Response({'logs': logs}, status=200)
     except:
-        return Response(status=400)
+        return Response({'message': 'bad credentials'}, status=400)
 
 
 @api_view(['GET'])
@@ -201,7 +201,7 @@ def get_band_history(request, band_id):
 
         return Response({'logs': logs.values()}, status=200)
     except:
-        return Response(status=400)
+        return Response({'message': 'bad request'}, status=400)
 
 
 @api_view(['GET'])
@@ -226,7 +226,7 @@ def get_guard_last_history(request, staff_id):
         last = last[len(last) - 1]
         return Response({'last': last}, status=200)
     except:
-        return Response(status=400)
+        return Response({'message': 'bad request'}, status=400)
 
 
 @api_view(['GET'])
@@ -237,7 +237,7 @@ def get_band_last_history(request, band_id):
         last = last[len(last) - 1]
         return Response({'last': last}, status=200)
     except:
-        return Response(status=400)
+        return Response({'message': 'edited'}, status=400)
 
 
 @api_view(['GET'])
@@ -249,7 +249,7 @@ def get_day_history(request):
         last = LogInstance.objects.filter(time__date=qdate).order_by('time').values()
         return Response({'logs': last}, status=200)
     except:
-        return Response(status=400)
+        return Response({'message': 'edited'}, status=400)
 
 
 @api_view(['GET'])
