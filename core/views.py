@@ -13,7 +13,7 @@ from django.shortcuts import redirect
 from rest_framework import permissions, authentication
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import ValidationError
-from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -42,7 +42,7 @@ class LoginView(APIView):
             user = serializer.validated_data['user']
             login(request, user)
 
-            return Response({'message':'login successful'},status=200)
+            return Response({'message': 'login successful'}, status=200)
 
         except ValidationError:
             return Response({'message': 'login failed'}, template_name='login.html',
