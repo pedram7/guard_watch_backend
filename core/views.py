@@ -41,8 +41,10 @@ class LoginView(APIView):
             serializer.is_valid(raise_exception=True)
             user = serializer.validated_data['user']
             login(request, user)
+            from datetime import datetime
 
-            return Response({'message': 'login successful'}, status=200)
+            return Response({'message': 'login successful', 'time': datetime.now().strftime('%Y-%m-%dT%H:%M:%S')},
+                            status=200)
 
         except ValidationError:
             return Response({'message': 'login failed'}, template_name='login.html',
