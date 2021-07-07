@@ -170,7 +170,7 @@ class BulkCreateLog(APIView):
 @api_view(['GET'])
 @login_required(login_url='/api/login')
 def guard_list(request):
-    guards = Guard.objects.all()
+    guards = Guard.objects.all().values()
     return Response({'guards': guards})
 
 
@@ -214,7 +214,7 @@ def get_guard_list(request):
 @api_view(['GET'])
 @login_required(login_url='/api/login')
 def get_band_list(request):
-    bands = Wristband.objects.all()
+    bands = Wristband.objects.all().values()
     return Response({'bands': bands}, status=200)
 
 
