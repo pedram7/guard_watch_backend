@@ -271,7 +271,9 @@ def get_guard_profile(request, staff_id):
 # @login_required(login_url='/api/login')
 def active_guards(request):
     try:
-        guards = Guard.objects.exclude(band__isnull=False).values()
+        guards = Guard.objects.filter(band__isnull=False).values(
+            'id', 'name', 'band__band_id', 'staff_id', 'date_joined')
+
         return Response({'guards': guards}, status=200)
     except:
         return Response({'message': 'Bad req'}, status=400)
