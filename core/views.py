@@ -225,7 +225,8 @@ def get_band_list(request):
 def get_guard_last_history(request, staff_id):
     try:
         last = LogInstance.objects.filter(guard__staff_id=staff_id).order_by('time').values()
-        last = last[len(last) - 1]
+        if len(last) > 0:
+            last = last[len(last) - 1]
         return Response({'last': last}, status=200)
     except:
         return Response({'message': 'bad request'}, status=400)
@@ -236,7 +237,8 @@ def get_guard_last_history(request, staff_id):
 def get_band_last_history(request, band_id):
     try:
         last = LogInstance.objects.filter(wristband__band_id=band_id).order_by('time').values()
-        last = last[len(last) - 1]
+        if len(last) > 0:
+            last = last[len(last) - 1]
         return Response({'last': last}, status=200)
     except:
         return Response({'message': 'edited'}, status=400)
