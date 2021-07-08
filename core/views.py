@@ -171,13 +171,6 @@ class BulkCreateLog(APIView):
 
 @api_view(['GET'])
 # @login_required(login_url='/api/login')
-def guard_list(request):
-    guards = Guard.objects.all().values()
-    return Response({'guards': guards})
-
-
-@api_view(['GET'])
-# @login_required(login_url='/api/login')
 def get_guard_history(request, staff_id):
     try:
         logs = LogInstance.objects.filter(guard__staff_id=staff_id).order_by('time').values()
@@ -209,14 +202,14 @@ def get_band_history(request, band_id):
 @api_view(['GET'])
 # @login_required(login_url='/api/login')
 def get_guard_list(request):
-    bands = Wristband.objects.all().values()
+    bands = Wristband.objects.all().values('id', 'name', 'band__band_id', 'staff_id', 'date_joined', 'date_left')
     return Response({'bands': bands}, status=200)
 
 
 @api_view(['GET'])
 # @login_required(login_url='/api/login')
 def get_band_list(request):
-    bands = Wristband.objects.all().values()
+    bands = Wristband.objects.all().values('id', 'band_id', 'guard__staff_id', 'is_deleted')
     return Response({'bands': bands}, status=200)
 
 
@@ -260,7 +253,8 @@ def get_day_history(request):
 # @login_required(login_url='/api/login')
 def get_guard_profile(request, staff_id):
     try:
-        guard = Guard.objects.get(staff_id=staff_id).values()
+        guard = Guard.objects.get(staff_id=staff_id).values('id', 'name', 'band__band_id', 'staff_id', 'date_joined',
+                                                            'date_left')
         return Response({'guard': guard}, status=200)
 
     except:

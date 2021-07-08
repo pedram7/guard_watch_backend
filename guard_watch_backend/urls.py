@@ -32,13 +32,10 @@ urlpatterns = [
                   path('api/guard_last_history/<slug:staff_id>/', get_guard_last_history, name='guard_last'),
                   path('api/active_guards/', active_guards, name='guard_last'),
 
-                  path('api/guard_profile/<slug:staff_id>', get_guard_profile, name='guard_profile'),
-                  path('api/edit_guard/', (UpdateGuard.as_view()),
+                  path('api/guard_profile/<slug:staff_id>/', get_guard_profile, name='guard_profile'),
+                  path('api/edit_guard/<slug:staff_id>/', (UpdateGuard.as_view()),
                        name='edit_guard'),
 
-                  # path('api/edit_guard/', login_required(UpdateGuard.as_view(), login_url='/api/login'),
-                  #      name='edit_guard'),
-                  #
                   path('api/bands_list/', get_band_list, name='band_list'),
                   path('api/band_interval_history/<slug:band_id>/', get_band_history, name='band_history'),
                   # qstart ,#qend
@@ -54,6 +51,10 @@ urlpatterns = [
 
                   path('api/bulk_create_log/', (BulkCreateLog.as_view()),
                        name='create_log'),
+
+                  # path('api/edit_guard/', login_required(UpdateGuard.as_view(), login_url='/api/login'),
+                  #      name='edit_guard'),
+                  #
                   #
                   # path('api/delete_band/', login_required(UpdateBand.as_view(), login_url='/api/login'),
                   #      name='delete_band'),
