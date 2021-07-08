@@ -170,14 +170,14 @@ class BulkCreateLog(APIView):
 
 
 @api_view(['GET'])
-@login_required(login_url='/api/login')
+# @login_required(login_url='/api/login')
 def guard_list(request):
     guards = Guard.objects.all().values()
     return Response({'guards': guards})
 
 
 @api_view(['GET'])
-@login_required(login_url='/api/login')
+# @login_required(login_url='/api/login')
 def get_guard_history(request, staff_id):
     try:
         logs = LogInstance.objects.filter(guard__staff_id=staff_id).order_by('time').values()
@@ -187,7 +187,7 @@ def get_guard_history(request, staff_id):
 
 
 @api_view(['GET'])
-@login_required(login_url='/api/login')
+# @login_required(login_url='/api/login')
 def get_band_history(request, band_id):
     try:
         from datetime import datetime
@@ -207,21 +207,21 @@ def get_band_history(request, band_id):
 
 
 @api_view(['GET'])
-@login_required(login_url='/api/login')
+# @login_required(login_url='/api/login')
 def get_guard_list(request):
     bands = Wristband.objects.all().values()
     return Response({'bands': bands}, status=200)
 
 
 @api_view(['GET'])
-@login_required(login_url='/api/login')
+# @login_required(login_url='/api/login')
 def get_band_list(request):
     bands = Wristband.objects.all().values()
     return Response({'bands': bands}, status=200)
 
 
 @api_view(['GET'])
-@login_required(login_url='/api/login')
+# @login_required(login_url='/api/login')
 def get_guard_last_history(request, staff_id):
     try:
         last = LogInstance.objects.filter(guard__staff_id=staff_id).order_by('time').values()
@@ -233,7 +233,7 @@ def get_guard_last_history(request, staff_id):
 
 
 @api_view(['GET'])
-@login_required(login_url='/api/login')
+# @login_required(login_url='/api/login')
 def get_band_last_history(request, band_id):
     try:
         last = LogInstance.objects.filter(wristband__band_id=band_id).order_by('time').values()
@@ -245,7 +245,7 @@ def get_band_last_history(request, band_id):
 
 
 @api_view(['GET'])
-@login_required(login_url='/api/login')
+# @login_required(login_url='/api/login')
 def get_day_history(request):
     try:
         from datetime import datetime
@@ -257,7 +257,7 @@ def get_day_history(request):
 
 
 @api_view(['GET'])
-@login_required(login_url='/api/login')
+# @login_required(login_url='/api/login')
 def get_guard_profile(request, staff_id):
     try:
         guard = Guard.objects.get(staff_id=staff_id).values()
@@ -268,7 +268,7 @@ def get_guard_profile(request, staff_id):
 
 
 @api_view(['GET'])
-@login_required(login_url='/api/login')
+# @login_required(login_url='/api/login')
 def active_guards(request):
     try:
         guards = Guard.objects.exclude(band__isnull=False).values()
