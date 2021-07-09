@@ -254,13 +254,15 @@ def get_day_history(request):
 @api_view(['GET'])
 # @login_required(login_url='/api/login')
 def get_guard_profile(request, staff_id):
-    try:
-        guard = Guard.objects.get(staff_id=staff_id).values('id', 'name', 'band__band_id', 'staff_id', 'date_joined',
-                                                            'date_left')
-        return Response({'guard': guard}, status=200)
+    # try:
+    guard = Guard.objects.filter(staff_id=staff_id).values('id', 'name', 'band__band_id', 'staff_id', 'date_joined',
+                                                           'date_left')
 
-    except:
-        return Response({'message': 'Bad req'}, status=400)
+    return Response({'guard': guard}, status=200)
+
+
+# except:
+#     return Response({'message': 'Bad req'}, status=400)
 
 
 @api_view(['GET'])
