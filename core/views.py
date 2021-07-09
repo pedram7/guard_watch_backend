@@ -271,7 +271,7 @@ def get_guard_profile(request, staff_id):
     # try:
     guard = Guard.objects.filter(staff_id=staff_id).values('id', 'name', 'band__band_id', 'staff_id', 'date_joined',
                                                            'date_left')
-    last = LogInstance.objects.filter(guard=guard).order_by('time').values()
+    last = LogInstance.objects.filter(guard__staff_id=guard['staff_id']).order_by('time').values()
     if len(last):
         last = last[len(last) - 1]
     else:
