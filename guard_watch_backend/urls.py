@@ -49,8 +49,8 @@ urlpatterns = [
                   path('api/delete_guard/', (UpdateGuard.as_view()),
                        name='delete_guard'),
 
-                  path('api/bulk_create_log/', (BulkCreateLog.as_view()),
-                       name='create_log'),
+                  # path('api/bulk_create_log/', (BulkCreateLog.as_view()),
+                  #      name='create_log'),
 
                   # path('api/edit_guard/', login_required(UpdateGuard.as_view(), login_url='/api/login'),
                   #      name='edit_guard'),
@@ -61,6 +61,6 @@ urlpatterns = [
                   # path('api/delete_guard/', login_required(UpdateGuard.as_view(), login_url='/api/login'),
                   #      name='delete_guard'),
                   #
-                  # path('api/bulk_create_log/', login_required(BulkCreateLog.as_view(), login_url='/api/login'),
-                  #      name='create_log'),
+                  path('api/bulk_create_log/', login_required(BulkCreateLog.as_view(), login_url='/api/login'),
+                       name='create_log'),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

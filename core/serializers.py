@@ -56,6 +56,7 @@ class BulkLogSerializer(serializers.Serializer):
         for item in data:
             instance = LogInstance(**item)
             instance.wristband = Wristband.objects.get(band_id=validated_data['band_id'])
+            instance.guard = instance.wristband.guard
             objs.append(instance)
 
         LogInstance.objects.bulk_create(objs, ignore_conflicts=True)
