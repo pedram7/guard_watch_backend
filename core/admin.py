@@ -11,7 +11,7 @@ class GuardAdmin(admin.ModelAdmin):
 
 class LogAdmin(admin.ModelAdmin):
     list_filter = ('guard', 'wristband')
-    list_display = ('guard', 'wristband',)
+    list_display = ('id', 'time', 'guard', 'wristband',)
     # search_fields = (,)
 
 
