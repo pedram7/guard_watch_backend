@@ -116,7 +116,7 @@ class UpdateGuard(APIView):
         if guard.date_left is None:
             guard.date_left = datetime.now()
         guard.is_deleted = True
-        if guard.band is not None:
+        if guard.band:
             guard.band.guard = None
             guard.band.save()
         guard.save()
