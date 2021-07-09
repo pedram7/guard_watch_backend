@@ -202,8 +202,8 @@ def get_band_history(request, band_id):
 @api_view(['GET'])
 # @login_required(login_url='/api/login')
 def get_guard_list(request):
-    bands = Guard.objects.all().values('id', 'name', 'band__band_id', 'staff_id', 'date_joined', 'date_left')
-    return Response({'bands': bands}, status=200)
+    guards = Guard.objects.all().values('id', 'name', 'band__band_id', 'staff_id', 'date_joined', 'date_left')
+    return Response({'guards': guards}, status=200)
 
 
 @api_view(['GET'])
