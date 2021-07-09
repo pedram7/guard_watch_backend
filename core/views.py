@@ -92,11 +92,12 @@ class UpdateGuard(APIView):
     # def get(self, request):
     #     pass
 
-    def post(self, request):
+    def post(self, request, staff_id):
         serializer = GuardSerializer(data=request.data)
-        if not serializer.is_valid():
+        guard = Guard.objects.filter(staff_id=staff_id)
+        if len(guard) != 1 or not serializer.is_valid():
             return Response({'message': 'Bad Credentials'}, status=400)
-        guard = serializer.update(serializer.validated_data)
+        guard = serializer.update(guard[0], serializer.validated_data)
         return Response({'message': 'Updated Successfully'}, status=200)
 
     def delete(self, request):
