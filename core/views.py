@@ -115,13 +115,13 @@ class UpdateBand(APIView):
 
     # def get(self, request):
     #     pass
-
-    def post(self, request):
-        serializer = BandSerializer(data=request.data)
-        if not serializer.is_valid():
-            return Response({'message': 'Bad Credentials'}, status=400)
-        band = serializer.update(serializer.validated_data)
-        return Response({'message': 'Updated Successfully'}, status=200)
+    #
+    # def post(self, request):
+    #     serializer = BandSerializer(data=request.data)
+    #     if not serializer.is_valid():
+    #         return Response({'message': 'Bad Credentials'}, status=400)
+    #     band = serializer.update(serializer.validated_data)
+    #     return Response({'message': 'Updated Successfully'}, status=200)
 
     def delete(self, request):
         try:
