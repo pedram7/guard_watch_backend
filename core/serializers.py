@@ -39,6 +39,10 @@ class LogInstanceSerializer(serializers.ModelSerializer):
         fields = ['lat', 'lang', 'heartbeat', 'emergency_alert']
 
     def validate(self, attrs):
+        if attrs['emergency_alert'] == 0:
+            attrs['emergency_alert'] = False
+        elif attrs['emergency_alert'] == 1:
+            attrs['emergency_alert'] = True
         return attrs
 
     def to_internal_value(self, data):
