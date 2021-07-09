@@ -106,7 +106,9 @@ class UpdateGuard(APIView):
         except Guard.DoesNotExist:
             return Response({'message': 'Wrong ID'}, status=400)
         from datetime import datetime
-        guard.date_left = datetime.now()
+        if guard.date_left is None:
+            guard.date_left = datetime.now()
+        guard.is_deleted = True
         guard.save()
         return Response({'message': 'Deleted Successfully'}, status=200)
 

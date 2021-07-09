@@ -14,6 +14,7 @@ class Guard(models.Model):
     staff_id = models.CharField(max_length=255, unique=True)
     date_joined = models.DateTimeField(blank=True, null=True)
     date_left = models.DateTimeField(blank=True, null=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return "{} : {}".format(self.name, self.staff_id)
