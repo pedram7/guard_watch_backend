@@ -15,12 +15,18 @@ class Guard(models.Model):
     date_joined = models.DateTimeField(blank=True, null=True)
     date_left = models.DateTimeField(blank=True, null=True)
 
+    def __str__(self):
+        return "{} : {}".format(self.name, self.staff_id)
+
 
 class Wristband(models.Model):
     band_id = models.CharField(max_length=255, unique=True)
     guard = models.OneToOneField(Guard, on_delete=models.SET_NULL, null=True, blank=True, default=None,
                                  related_name='band')
     is_deleted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return "band {}".format(self.band_id)
 
 
 class LogInstance(models.Model):
@@ -31,6 +37,9 @@ class LogInstance(models.Model):
     time = models.DateTimeField()
     heartbeat = models.PositiveSmallIntegerField(blank=True, null=True)
     emergency_alert = models.BooleanField(default=False)
+
+    def __str__(self):
+        return "log for band {} on {}".format(self.wristband.band_id, self.time)
 
     class Meta:
         unique_together = ('time', 'wristband')

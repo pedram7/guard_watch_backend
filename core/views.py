@@ -105,7 +105,9 @@ class UpdateGuard(APIView):
             guard = Guard.objects.get(staff_id=request.data.get('staff_id'))
         except Guard.DoesNotExist:
             return Response({'message': 'Wrong ID'}, status=400)
-        guard.delete()
+        from datetime import datetime
+        guard.date_left = datetime.now()
+        guard.save()
         return Response({'message': 'Deleted Successfully'}, status=200)
 
 
@@ -128,7 +130,8 @@ class UpdateBand(APIView):
             band = Wristband.objects.get(band_id=request.data.get('band_id'))
         except Wristband.DoesNotExist:
             return Response({'message': 'Wrong ID'}, status=400)
-        band.delete()
+        band.is_deleted = True
+        band.save()
         return Response({'message': 'Deleted Successfully'}, status=200)
 
 
