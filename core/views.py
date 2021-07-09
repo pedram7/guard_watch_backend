@@ -107,20 +107,19 @@ class UpdateGuard(APIView):
             guard = serializer.update(guard[0], serializer.validated_data)
             return Response({'message': 'Updated Successfully'}, status=200)
 
-
-def delete(self, request):
-    try:
-        guard = Guard.objects.get(staff_id=request.data.get('staff_id'))
-    except Guard.DoesNotExist:
-        return Response({'message': 'Wrong ID'}, status=400)
-    from datetime import datetime
-    if guard.date_left is None:
-        guard.date_left = datetime.now()
-    guard.is_deleted = True
-    guard.band.guard = None
-    guard.band.save()
-    guard.save()
-    return Response({'message': 'Deleted Successfully'}, status=200)
+    def delete(self, request):
+        try:
+            guard = Guard.objects.get(staff_id=request.data.get('staff_id'))
+        except Guard.DoesNotExist:
+            return Response({'message': 'Wrong ID'}, status=400)
+        from datetime import datetime
+        if guard.date_left is None:
+            guard.date_left = datetime.now()
+        guard.is_deleted = True
+        guard.band.guard = None
+        guard.band.save()
+        guard.save()
+        return Response({'message': 'Deleted Successfully'}, status=200)
 
 
 class UpdateBand(APIView):
