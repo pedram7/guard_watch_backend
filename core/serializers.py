@@ -36,7 +36,7 @@ class LoginSerializer(serializers.Serializer):
 class LogInstanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = LogInstance
-        fields = ['lat', 'lang', 'heartbeat', 'emergency_alert', 'time']
+        fields = ['lat', 'lang', 'heartbeat', 'emergency_alert']
 
     def validate(self, attrs):
         print("lksd")
