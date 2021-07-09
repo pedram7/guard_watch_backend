@@ -142,6 +142,8 @@ class UpdateBand(APIView):
             return Response({'message': 'Wrong ID'}, status=400)
         band.is_deleted = True
         band.save()
+        band.guard.band = None
+        band.guard.save()
         return Response({'message': 'Deleted Successfully'}, status=200)
 
 
