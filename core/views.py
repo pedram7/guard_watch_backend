@@ -202,7 +202,7 @@ def get_band_history(request, band_id):
 @api_view(['GET'])
 # @login_required(login_url='/api/login')
 def get_guard_list(request):
-    bands = Wristband.objects.all().values('id', 'name', 'band__band_id', 'staff_id', 'date_joined', 'date_left')
+    bands = Guard.objects.all().values('id', 'name', 'band__band_id', 'staff_id', 'date_joined', 'date_left')
     return Response({'bands': bands}, status=200)
 
 
@@ -232,6 +232,8 @@ def get_band_last_history(request, band_id):
         last = LogInstance.objects.filter(wristband__band_id=band_id).order_by('time').values()
         if len(last) > 0:
             last = last[len(last) - 1]
+        else:
+            last = None
         return Response({'last': last}, status=200)
     except:
         return Response({'message': 'edited'}, status=400)
@@ -267,6 +269,13 @@ def active_guards(request):
     try:
         guards = Guard.objects.filter(band__isnull=False).values(
             'id', 'name', 'band__band_id', 'staff_id', 'date_joined')
+        for guard in guards:
+            last = LogInstance.objects.filter(guard__staff_id=guard['staff_id']).order_by('time').values()
+            if len(last):
+                last = last[len(last) - 1]
+            else:
+                last = None
+            guard['last'] = last
 
         return Response({'guards': guards}, status=200)
     except:
