@@ -271,14 +271,17 @@ def get_guard_profile(request, staff_id):
     # try:
     guard = Guard.objects.filter(staff_id=staff_id).values('id', 'name', 'band__band_id', 'staff_id', 'date_joined',
                                                            'date_left')
-    last = LogInstance.objects.filter(guard__staff_id=guard['staff_id']).order_by('time').values()
-    if len(last):
-        last = last[len(last) - 1]
+    if len(guard) != 1:
+        return Response({'message': '0 or more than 1 guards with this staff id'}, status=400)
     else:
-        last = None
-    guard['last'] = last
-
-    return Response({'guard': guard}, status=200)
+        guard = guard[0]
+        last = LogInstance.objects.filter(guard__staff_id=guard['staff_id']).order_by('time').values()
+        if len(last):
+            last = last[len(last) - 1]
+        else:
+            last = None
+        guard['last'] = last
+        return Response({'guard': guard}, status=200)
 
 
 # except:
