@@ -39,7 +39,6 @@ class LogInstanceSerializer(serializers.ModelSerializer):
         fields = ['lat', 'lang', 'heartbeat', 'emergency_alert']
 
     def validate(self, attrs):
-        print("lksd")
         return attrs
 
     def to_internal_value(self, data):
