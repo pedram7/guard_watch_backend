@@ -95,22 +95,30 @@ class UpdateGuard(APIView):
     def post(self, request, staff_id):
         serializer = GuardSerializer(data=request.data)
         guard = Guard.objects.filter(staff_id=staff_id)
-        if len(guard) != 1 or not serializer.is_valid():
-            return Response({'message': 'Bad Credentials'}, status=400)
-        guard = serializer.update(guard[0], serializer.validated_data)
-        return Response({'message': 'Updated Successfully'}, status=200)
+        if len(guard) != 1:
+            return Response({'message': '0 or more than 1 guards with this staff id'}, status=400)
+        if not serializer.is_valid():
+            if guard[0].staff_id == serializer.data.get('staff_id'):
+                guard = serializer.update(guard[0], serializer.data)
+                return Response({'message': 'Updated Successfully'}, status=200)
+            else:
+                return Response({'message': 'Bad Credentials'}, status=400)
+        else:
+            guard = serializer.update(guard[0], serializer.validated_data)
+            return Response({'message': 'Updated Successfully'}, status=200)
 
-    def delete(self, request):
-        try:
-            guard = Guard.objects.get(staff_id=request.data.get('staff_id'))
-        except Guard.DoesNotExist:
-            return Response({'message': 'Wrong ID'}, status=400)
-        from datetime import datetime
-        if guard.date_left is None:
-            guard.date_left = datetime.now()
-        guard.is_deleted = True
-        guard.save()
-        return Response({'message': 'Deleted Successfully'}, status=200)
+
+def delete(self, request):
+    try:
+        guard = Guard.objects.get(staff_id=request.data.get('staff_id'))
+    except Guard.DoesNotExist:
+        return Response({'message': 'Wrong ID'}, status=400)
+    from datetime import datetime
+    if guard.date_left is None:
+        guard.date_left = datetime.now()
+    guard.is_deleted = True
+    guard.save()
+    return Response({'message': 'Deleted Successfully'}, status=200)
 
 
 class UpdateBand(APIView):
