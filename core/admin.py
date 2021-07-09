@@ -6,7 +6,7 @@ from .models import *
 
 class GuardAdmin(admin.ModelAdmin):
     list_display = ('staff_id', 'name', 'date_joined',)
-    search_fields = ('cow__farm__name', 'cow__cow_number',)
+    search_fields = ('staff_id', 'name',)
 
 
 class LogAdmin(admin.ModelAdmin):
